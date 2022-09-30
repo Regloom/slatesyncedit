@@ -1,26 +1,29 @@
-# Getting Started with Create React App
+# Websocket Editor
+Websocket editor is website that allows teams to edit the same rich text editor simultaneously.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [websocket-editor](https://github.com/alireza-chassebi/websocket-editor).
+Original code is working with slate v0.47. 
+Here is an updated version which works with recent codebase, has support for images drag/drop & copy/paste.
 
-## Available Scripts
+## Local development
+To run app locally first start server and then open client React app(s).
 
+### Server-side (express + socket.io)
+To start server:
+1. navigate to `server` folder
+2. run `node server.js` or `npm start`
+
+### Client-side (React + Slate)
 In the project directory, you can run:
 
-### `npm start`
-
+#### `npm start`
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
+#### `npm run build`
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
@@ -29,42 +32,35 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Development with docker
+Brefore you begin, ensure you have met the following requirements:
+- You have [Docker](https://www.docker.com/) installed
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### To run the development app, do the following:
+1. navigate to the projects root directory
+2. setup and run containers `docker-compose up`
+3. go to localhost:3000 in your browser
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### To run the production app, do the following:
+1. navigate to the projects root directory
+2. build app docker image `docker build -t prodimage .`
+3. create docker container and start the container
+```
+  docker run --name prodApp -e NODE_ENV=production -p 4000:4000 prodimage
+```
+4. go to localhost:4000 in your browser
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Teardown of Websocket Editor
+To teardown the development app, do the following:
+1. navigate to the projects root directory
+2. stop and remove containers
+```
+  docker-compose down
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+To teardown the production app do the following:
+1. navigate to the projects root directory
+2. stop and remove containers
+```
+  docker rm -f prodApp
+```
