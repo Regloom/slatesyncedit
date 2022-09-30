@@ -41,10 +41,14 @@ Brefore you begin, ensure you have met the following requirements:
 
 ### To run the production app, do the following:
 1. navigate to the projects root directory
-2. build app docker image `docker build -t prodimage .`
+2. build app docker image `docker build -t editorprodimg .`
 3. create docker container and start the container
 ```
-  docker run --name prodApp -e NODE_ENV=production -p 4000:4000 prodimage
+  docker run --name prodEditor -e NODE_ENV=production -p 4000:4000 editorprodimg
+```
+or in daemon mode:
+```
+  docker run --name prodEditor -e NODE_ENV=production -p 4000:4000 editorprodimg -d
 ```
 4. go to localhost:4000 in your browser
 

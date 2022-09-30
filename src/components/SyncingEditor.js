@@ -21,11 +21,12 @@ import initialValue from '../util/initialValue';
 import { Button, Icon, Toolbar } from './Components';
 // request birdirectional connection between server and client
 import { io } from 'socket.io-client';
-const ENDPOINT = "http://localhost:4000";
+const ENDPOINT = process.env.REACT_APP_ENDPOINT || 'http://localhost:4000';
 const socket = io(ENDPOINT, {
   transports: ["websocket"], // use WebSocket first, if available
   path: "/ws/"
 });
+
 
 // Initial example provdided by slate.js for syncing editors
 // https://github.com/ianstormtaylor/slate/blob/v0.47/examples/syncing-operations/index.js line 236
@@ -39,7 +40,7 @@ export const SyncingEditor = ({ groupId }) => {
   const [value, setValue] = useState(initialValue); //just for triggering re-rendering of Editor
 
   useEffect(() => {
-
+    
     const getServerValue = async () => {
       const response = await fetch(`${ENDPOINT}/api/groups/${groupId}`);
       const newValue = await response.json(); 
