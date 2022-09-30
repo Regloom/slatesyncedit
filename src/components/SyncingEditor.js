@@ -69,11 +69,11 @@ export const SyncingEditor = ({ groupId }) => {
   const remote = useRef(false);
 
   const onChange = (value)=>{
-    setValue(value);
     const isAstChange = editor.operations.some(
       op => 'set_selection' !== op.type
     )
     if (isAstChange) { //content changed!
+      setValue(value);
       //emit event to server
       if (!remote.current) {
         socket.emit('new-operations',{
