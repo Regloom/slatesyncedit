@@ -21,12 +21,15 @@ import initialValue from '../util/initialValue';
 import { Button, Icon, Toolbar } from './Components';
 // request birdirectional connection between server and client
 import { io } from 'socket.io-client';
-const ENDPOINT = process.env.REACT_APP_ENDPOINT || 'http://localhost:4000';
+
+//const ENDPOINT = process.env.REACT_APP_ENDPOINT || 'http://localhost:4000';
+const ENDPOINT = (window.origin === 'http://localhost:3000' ? 'http://localhost:4000' : window.origin);
+// console.log(`Endpoint is: ${ENDPOINT}`)
+
 const socket = io(ENDPOINT, {
   transports: ["websocket"], // use WebSocket first, if available
   path: "/ws/"
 });
-
 
 // Initial example provdided by slate.js for syncing editors
 // https://github.com/ianstormtaylor/slate/blob/v0.47/examples/syncing-operations/index.js line 236
@@ -34,9 +37,13 @@ const socket = io(ENDPOINT, {
 // Below code working on slate v0.47 only was modified to work with recent codebase & working with images
 // https://github.com/alireza-chassebi/websocket-editor/blob/master/src/components/SyncingEditor.js
 
+// Interesting article
+// https://www.smashingmagazine.com/2021/05/building-wysiwyg-editor-javascript-slatejs/
+
 export const SyncingEditor = ({ groupId }) => {
 
-  const [editor] = useState(() => withImages(withHistory(withReact(createEditor())))); 
+  const [editor] = useState(() => withImages(withHistory(withReact(createEditor()))));
+  //const editor = useMemo(() => withReact(createEditor()), []);
   const [value, setValue] = useState(initialValue); //just for triggering re-rendering of Editor
 
   useEffect(() => {
@@ -46,7 +53,7 @@ export const SyncingEditor = ({ groupId }) => {
       const newValue = await response.json(); 
       editor.children = newValue; //a new way to set editor content 
       setValue(newValue);//just to trigger re-rendering! 
-    }
+    } 
 
     getServerValue(); //editor content from server
 
@@ -131,6 +138,16 @@ export const SyncingEditor = ({ groupId }) => {
   
   const renderElement = (props) => {
     switch (props.element.type) {
+      case "paragraph":
+        return <Paragraph {...props} />;
+      case "h1":
+        return <h1 {...props.attributes}>{props.children}</h1>;
+      case "h2":
+        return <h2 {...props.attributes}>{props.children}</h2>;
+      case "h3":
+        return <h3 {...props.attributes}>{props.children}</h3>;
+      case "h4":
+        return <h4 {...props.attributes}>{props.children}</h4>;
       case "image":
         return <Image {...props} />;
       default:
