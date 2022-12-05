@@ -226,11 +226,12 @@ export const Toolbar = React.forwardRef( ({ className, ...props }, ref) => (
             margin-bottom: 20px;
           `
         )}> 
-        {/* Buttons for character styles */}
+        {/* Mark styles */}
         <MarkButton format="bold" icon="format_bold" />
         <MarkButton format="italic" icon="format_italic" />
         <MarkButton format="underline" icon="format_underlined" />
         <MarkButton format="code" icon="code" />
+        {/* Block styles */}
         <BlockButton format="h1" icon="looks_one" />
         <BlockButton format="h2" icon="looks_two" />
         <BlockButton format="h3" icon="looks_3" />
