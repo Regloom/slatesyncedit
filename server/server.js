@@ -19,8 +19,14 @@ let initialEditorValue = [
     children: [{ text: "Heading 2" }],
   },
   {
-    type: 'paragraph',
-    children: [{ text: 'A line of text in a paragraph from server.' }],
+    type: "paragraph",
+    children: [
+      { text: "Paragraph inside a sample document.\n" },
+      { text: "Bold text.\n", bold: true, code: true },
+      { text: "Italic text.\n", italic: true },
+      { text: "Bold and underlined text.\n", bold: true, underline: true },
+      { text: "Variable\n", code: true },
+    ],
   },
   {
     type: 'image',

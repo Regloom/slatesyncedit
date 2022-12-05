@@ -2,12 +2,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 // Import the Slate components and React plugin.
 import { createEditor} from 'slate'
-import { Slate, Editable, withReact} from 'slate-react'
+import { Slate, Editable, withReact, DefaultElement} from 'slate-react'
 import { withHistory } from 'slate-history'
 
 //local dependencies
 import initialValue from '../util/initialValue';
-import { Toolbar, Paragraph, Image, withImages } from './Components';
+import { Toolbar, Paragraph, Image, withImages, StyledText } from './Components';
+
 // request birdirectional connection between server and client
 import { io } from 'socket.io-client';
 
@@ -36,8 +37,7 @@ export const SyncingEditor = ({ groupId }) => {
   const [value, setValue] = useState(initialValue); //just for triggering re-rendering of Editor
 
   useEffect(() => {
-    const getServerValue = async (groupId) => { //done for fancy ASYNC syntax!
-      console.log('here we go');
+    const getServerValue = async () => { //done for fancy ASYNC syntax!
       const response = await fetch(`${ENDPOINT}/api/groups/${groupId}`);
       const newValue = await response.json();
       editor.children = newValue; //a new way to set editor content 
@@ -95,20 +95,24 @@ export const SyncingEditor = ({ groupId }) => {
         return <h2 {...props.attributes}>{props.children}</h2>;
       case "h3":
         return <h3 {...props.attributes}>{props.children}</h3>;
-      case "h4":
-        return <h4 {...props.attributes}>{props.children}</h4>;
       case "image":
         return <Image {...props} />;
       default:
-        return <Paragraph {...props} />;
+        // return <Paragraph {...props} />;
+        // For the default case, we delegate to Slate's default rendering. 
+        return <DefaultElement {...props} />;
     }
+  }
+
+  const renderLeaf = (props) => {
+    return <StyledText {...props} />;
   }
 
   return (
     <>
       <Slate editor={editor} value={value} onChange={onChange} >
         <Toolbar />
-        <Editable renderElement={renderElement} placeholder="Enter some text"/>
+        <Editable renderElement={renderElement} renderLeaf={renderLeaf} placeholder="Enter some text"/>
       </Slate>
     </>
   );
